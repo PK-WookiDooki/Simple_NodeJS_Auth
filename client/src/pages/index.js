@@ -7,3 +7,5 @@ export { default as PNF } from "./PageNotFound";
 
 export { default as DForm } from "./account/DeleteForm";
 export { default as CPassword } from "./account/PasswordChanging";
+export { default as CName } from "./account/ChangeName";
+export { default as CChangeName } from "./account/ConfirmChangeName";

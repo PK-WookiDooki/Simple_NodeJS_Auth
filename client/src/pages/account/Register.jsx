@@ -23,7 +23,7 @@ const Create = () => {
     try {
       if (user) {
         const { data } = await createUser(user);
-        // console.log(data);
+        console.log(data);
         setError(data?.message);
         data?.success && nav("/login");
       }
@@ -37,11 +37,7 @@ const Create = () => {
       <div className="w-96 mx-auto border shadow p-5 rounded-sm bg-gray-300">
         <h2 className="text-lg font-semibold mb-5"> Register Account </h2>
 
-        {error ? (
-          <p className="text-red-600 mb-2 "> {error?.sqlMessage} </p>
-        ) : (
-          ""
-        )}
+        {error ? <p className="text-red-600 mb-2 "> {error} </p> : ""}
         <form onSubmit={handleSubmit} action="">
           <div className="mb-3">
             <input
@@ -70,16 +66,6 @@ const Create = () => {
               placeholder="Password"
               className="w-full h-10 rounded-sm outline-none px-2 border border-black"
               value={user.password}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              name="role"
-              placeholder="Role"
-              className="w-full h-10 rounded-sm outline-none px-2 border border-black"
-              value={user.role}
               onChange={handleChange}
             />
           </div>

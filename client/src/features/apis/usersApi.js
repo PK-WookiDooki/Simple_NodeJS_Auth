@@ -55,6 +55,15 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ["api"],
     }),
+
+    changeUserName: builder.mutation({
+      query: ({ id, user }) => ({
+        url: `/update_profile/${id}`,
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["api"],
+    }),
   }),
 });
 
@@ -65,4 +74,5 @@ export const {
   useLogoutAccountMutation,
   useRemoveMutation,
   useChangePasswordMutation,
+  useChangeUserNameMutation,
 } = usersApi;

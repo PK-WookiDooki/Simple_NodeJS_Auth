@@ -1,5 +1,6 @@
 import { hashSync, compareSync } from "bcrypt";
 import { db } from "../index.js";
+import jwt from "jsonwebtoken";
 
 export const getAllUser = async (req, res) => {
   const q = "SELECT * FROM users";
@@ -25,9 +26,9 @@ export const registerUser = async (req, res) => {
     const values = [name, email, hashPws, role];
     db.query(findQ, [email], (err, data) => {
       if (data.length > 0) {
-        res.json({
+        res.status(209).json({
           success: false,
-          message: "User already exist! Please Login.",
+          message: "User already exist!.",
         });
       } else {
         db.query(q, [values], (err, data) => {
@@ -43,8 +44,6 @@ export const registerUser = async (req, res) => {
 
 export const userLogin = async (req, res) => {
   const { email, password } = req.body;
-
-  // return res.json({ data: [email, password] });
 
   if (!(email && password) || !email || !password) {
     return res.json({ success: false, message: "All input is required!" });
@@ -64,7 +63,11 @@ export const userLogin = async (req, res) => {
       if (!isCorrect) {
         res.json({ success: false, message: "Password is incorrect!" });
       } else {
-        const token = Math.random(100000, 999999).toString(36).substring(2);
+        const token = jwt.sign(
+          { email: email },
+          process.env.ACCESS_SECRET_TOKEN,
+          { expiresIn: 60 * 60 * 24 }
+        );
         res.json({
           success: true,
           user: data[0],
@@ -154,4 +157,39 @@ export const passwordChanging = async (req, res) => {
       }
     }
   });
+};
+
+export const changeUserData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, password } = req.body;
+
+    const q = "SELECT * FROM users WHERE id = ?";
+    db.query(q, [id], (err, data) => {
+      if (err) {
+        return res.json({ success: false, message: err });
+      } else {
+        const isCorrect = compareSync(password, data[0].password);
+        if (isCorrect) {
+          const q = "UPDATE users SET name = ? WHERE id = ?";
+          db.query(q, [name, id], (err, data) => {
+            if (err)
+              return res.json({
+                success: false,
+                message: err,
+              });
+
+            return res.json({ success: true, data: data });
+          });
+        } else {
+          return res.json({
+            success: false,
+            message: "Password is incorrect!",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 };

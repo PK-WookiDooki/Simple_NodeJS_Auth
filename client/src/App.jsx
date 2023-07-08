@@ -2,6 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
   About,
+  CChangeName,
+  CName,
   CPassword,
   Contact,
   DForm,
@@ -10,7 +12,7 @@ import {
   Register,
   Users,
 } from "./pages";
-import { IsAuth, MGuard } from "./components";
+import { IsAuth, IsValid, MGuard } from "./components";
 import Layout from "./layouts/Layout";
 
 const App = () => {
@@ -30,6 +32,17 @@ const App = () => {
           <Route path="contact" element={<Contact />} />
           <Route path="remove_account" element={<DForm />} />
           <Route path="change_password" element={<CPassword />} />
+          <Route path="change_name">
+            <Route index element={<CName />} />
+            <Route
+              path="confirmation"
+              element={
+                <IsValid>
+                  <CChangeName />
+                </IsValid>
+              }
+            />
+          </Route>
         </Route>
         <Route
           path="/register"

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLoginAccountMutation } from "../../features/apis/usersApi";
 import { Link, useNavigate } from "react-router-dom";
-import cookie from "cookiejs";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../features/services/usersSlice";
 
@@ -24,7 +23,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await loginAccount(user);
-      // console.log(data);
+      //console.log(data);
       dispatch(addUser({ user: data?.user, token: data?.token }));
       if (data?.success) {
         nav("/");
