@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import sql from "mysql2";
 import bodyParser from "body-parser";
-import router from "./routes/usersRoute.js";
+import { UserRouter } from "./routes/usersRoute.js";
 import { config } from "dotenv";
+import { BlogRouter } from "./routes/blogsRoute.js";
 
 const app = express();
 
@@ -18,19 +19,20 @@ app.use(express.json());
 
 const port = 9990;
 export const db = sql.createConnection({
-  host: "127.0.0.1",
-  user: "psk",
-  password: process.env.USER_PASSWORD,
-  database: "nodejs_react",
+    host: "127.0.0.1",
+    user: "psk",
+    password: process.env.USER_PASSWORD,
+    database: "nodejs_react",
 });
 
 //userRoute
-app.use(router);
+app.use(UserRouter);
+app.use("/blogs", BlogRouter);
 
 app.listen(port, () => {
-  if (db) {
-    console.log("Connected to database");
-  } else {
-    console.error("Error connecting to the database");
-  }
+    if (db) {
+        console.log("Connected to database");
+    } else {
+        console.error("Error connecting to the database");
+    }
 });

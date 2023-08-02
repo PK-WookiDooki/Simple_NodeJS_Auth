@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
-  changeUserData,
-  deleteUser,
-  getAllUser,
-  passwordChanging,
-  registerUser,
-  userLogin,
-  userLogout,
+    changeUserData,
+    deleteUser,
+    getAllUser,
+    passwordChanging,
+    registerUser,
+    userLogin,
+    userLogout,
 } from "../controllers/users.js";
 
 const router = Router();
@@ -19,4 +19,4 @@ router.post("/change_password/:id", passwordChanging);
 router.delete("/remove/:id", deleteUser);
 router.post("/update_profile/:id", changeUserData);
 
-export default router;
+export const UserRouter = router;
